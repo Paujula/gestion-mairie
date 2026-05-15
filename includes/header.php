@@ -25,18 +25,23 @@ define('BASE_URL', '/gestion-mairie/');
         </a>
 
       
-        <?php if (isset($_SESSION['user'])): ?>
-            <a href="<?= BASE_URL ?>documents/ajout_document.php" style="color:white; margin-right:15px;">
-                Nos Documents
-            </a>
-        <?php else: ?>
-            <a href="<?= BASE_URL ?>auth/login.php" style="color:white; margin-right:15px;">
-                Nos Documents
-            </a>
-        <?php endif; ?>
+      <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === "archiviste"): ?>
+    <a href="<?= BASE_URL ?>documents/ajout_document.php"
+       style="color:white; margin-right:15px;">
+        Nos Documents
+    </a>
+<?php endif; ?>
 
         <a href="<?= BASE_URL ?>apropos.php" style="color:white; margin-right:15px;">A propos</a>
         <a href="<?= BASE_URL ?>contact.php" style="color:white; margin-right:15px;">Contact</a>
+        
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
+            <a href="<?= BASE_URL ?>documents/admin.php" style="color:white; margin-right:15px;">
+                Admin
+            </a>
+        <?php endif; ?>
+
+
 
         <?php if (isset($_SESSION['user'])): ?>
             <span style="margin-right:10px;">

@@ -2,18 +2,17 @@
 session_start();
 require_once("../config/connexion.php");
 
-
 if (!isset($_SESSION['user'])) {
     header("Location: ../auth/login.php");
     exit();
 }
 
 if ($_SESSION['user']['role'] !== "archiviste") {
-    die("❌ Accès refusé : archiviste uniquement");
+    header("Location: ../auth/login.php");
+    exit();
 }
 
 $message = "";
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -29,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $fichier = time() . "_" . $_FILES['fichier']['name'];
     $tmp = $_FILES['fichier']['tmp_name'];
-
     $destination = "../uploads/" . $fichier;
 
     if (move_uploaded_file($tmp, $destination)) {
@@ -37,17 +35,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         try {
             $connexion->beginTransaction();
 
-           
             $stmt = $connexion->prepare("INSERT INTO sous_serie(libelle_sous_serie) VALUES(?)");
             $stmt->execute([$libelle_sous_serie]);
             $id_sous_serie = $connexion->lastInsertId();
 
-         
             $stmt = $connexion->prepare("INSERT INTO serie_archives(cote, nom_serie, id_sous_serie) VALUES(?,?,?)");
             $stmt->execute([$cote, $nom_serie, $id_sous_serie]);
             $id_serie = $connexion->lastInsertId();
 
-          
             $stmt = $connexion->prepare("
                 INSERT INTO documents(
                     titre,
@@ -71,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]);
 
             $connexion->commit();
-
             $message = "✅ Document ajouté avec succès";
 
         } catch (Exception $e) {
@@ -84,16 +78,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-
 $stmt = $connexion->query("
-    SELECT d.*, s.cote, s.nom_serie, ss.libelle_sous_serie
+    SELECT 
+        d.*, 
+        YEAR(d.date_enregistrement) AS annee,
+        s.cote, s.nom_serie, 
+        ss.libelle_sous_serie
     FROM documents d
     JOIN serie_archives s ON d.id_serie = s.id_serie
     JOIN sous_serie ss ON s.id_sous_serie = ss.id_sous_serie
-    ORDER BY d.id_document DESC
+    ORDER BY d.emplacement ASC, annee DESC, d.date_enregistrement DESC
 ");
 
 $documents = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$groupes = [];
+
+foreach ($documents as $doc) {
+    $groupes[$doc['emplacement']][$doc['annee']][] = $doc;
+}
 ?>
 
 <?php include("../includes/header.php"); ?>
@@ -163,36 +167,59 @@ $documents = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <hr>
 
+<h2> Liste des documents enrégistrés</h2>
 
-<h2> Liste complète des documents enrégistrés</h2>
+<?php foreach ($groupes as $emplacement => $annees): ?>
 
-<?php foreach ($documents as $doc): ?>
+    <h2 style="background:#2c3e50;color:white;padding:10px;">
+        📍 Emplacement : <?= htmlspecialchars($emplacement) ?>
+    </h2>
 
-<div style="border:1px solid #ccc; margin:15px; padding:15px; background:#f9f9f9;">
+    <?php foreach ($annees as $annee => $docs): ?>
 
-    <h3> <?= htmlspecialchars($doc['titre']) ?></h3>
+        <h3 style="color:#2980b9;">📅 Année : <?= $annee ?></h3>
 
-    <p><b> Cote :</b> <?= htmlspecialchars($doc['cote']) ?></p>
-    <p><b> Titre :</b> <?= htmlspecialchars($doc['titre']) ?></p> 
-    <p><b> Analyse :</b> <?= htmlspecialchars($doc['analyse']) ?></p> 
-    <p><b> Date :</b> <?= htmlspecialchars($doc['date_enregistrement']) ?></p>
-    <p><b> Série :</b> <?= htmlspecialchars($doc['nom_serie']) ?></p>
-    <p><b> Sous-série :</b> <?= htmlspecialchars($doc['libelle_sous_serie']) ?></p>
-    <p><b> Statut :</b> <?= htmlspecialchars($doc['statut']) ?></p>
-    <p><b> Emplacement :</b> <?= htmlspecialchars($doc['emplacement']) ?></p>
+        <table border="1" cellpadding="10" cellspacing="0" width="100%" style="margin-bottom:30px;">
+            <tr style="background:#f2f2f2;">
+                <th>Cote</th>
+                <th>Titre</th>
+                <th>Analyse</th>
+                <th>Date</th>
+                <th>Série</th>
+                <th>Sous-série</th>
+                <th>Statut</th>
+                <th>Emplacement</th>
+                <th>Fichier</th>
+                <th>Actions</th>
+            </tr>
 
+            <?php foreach ($docs as $doc): ?>
+                <tr>
+                    <td><?= htmlspecialchars($doc['cote']) ?></td>
+                    <td><?= htmlspecialchars($doc['titre']) ?></td>
+                    <td><?= htmlspecialchars($doc['analyse']) ?></td>
+                    <td><?= htmlspecialchars($doc['date_enregistrement']) ?></td>
+                    <td><?= htmlspecialchars($doc['nom_serie']) ?></td>
+                    <td><?= htmlspecialchars($doc['libelle_sous_serie']) ?></td>
+                    <td><?= htmlspecialchars($doc['statut']) ?></td>
+                    <td><?= htmlspecialchars($doc['emplacement']) ?></td>
 
-    <p>
-        <b>Fichier :</b>
-        <a href="../uploads/<?= htmlspecialchars($doc['fichier']) ?>" target="_blank">
-            Télécharger
-        </a>
-    </p>
+                    <td>
+                        <a href="../uploads/<?= htmlspecialchars($doc['fichier']) ?>" target="_blank">
+                            Télécharger
+                        </a>
+                    </td>
 
-    <a href="consulter.php?id=<?= $doc['id_document'] ?>">
-         Consulter
-    </a>
+                    <td>
+                        <a href="consulter.php?id=<?= $doc['id_document'] ?>" style="color:blue;">Consulter</a>
+                        <a href="modifier.php?id=<?= $doc['id_document'] ?>" style="color:orange;">Modifier</a>
+                        <a href="supprimer.php?id=<?= $doc['id_document'] ?>" style="color:red;" onclick="return confirm('Supprimer ?')">Supprimer</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
 
-</div>
+        </table>
+
+    <?php endforeach; ?>
 
 <?php endforeach; ?>

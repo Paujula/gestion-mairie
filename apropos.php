@@ -9,14 +9,14 @@ include("includes/header.php");
 
     <hr>
 
-    <h2>📌 Présentation</h2>
+    <h2> Présentation</h2>
     <p>
         Le système de gestion des archives de la mairie est une application web développée pour moderniser
         la gestion des documents administratifs. Il permet de stocker, organiser et consulter les documents
         de manière sécurisée et efficace.
     </p>
 
-    <h2>🎯 Objectif du système</h2>
+    <h2> Objectif du système</h2>
     <ul>
         <li>Centraliser tous les documents administratifs</li>
         <li>Faciliter la recherche des archives</li>
@@ -31,7 +31,7 @@ include("includes/header.php");
         <li>🏢 Agents de la mairie</li>
     </ul>
 
-    <h2>🔐 Sécurité</h2>
+    <h2> Sécurité</h2>
     <p>
         L’accès aux documents est sécurisé par authentification.
         Certaines actions comme l’ajout ou la consultation détaillée nécessitent une connexion.

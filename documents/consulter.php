@@ -39,25 +39,26 @@ if (!$doc) {
 
 <?php include("../includes/header.php"); ?>
 
-<h2>📄 Fiche complète du document</h2>
+<h2> Fiche complète du document</h2>
 
 <div style="border:1px solid #ccc; padding:20px; max-width:700px; margin:auto; background:#f9f9f9;">
 
-    <h3>📌 <?= htmlspecialchars($doc['titre']) ?></h3>
 
-    <p><b>🏷️ Cote :</b> <?= htmlspecialchars($doc['cote']) ?></p>
+    <p><b> Cote :</b> <?= htmlspecialchars($doc['cote']) ?></p>
 
-    <p><b>📝 Analyse :</b> <?= htmlspecialchars($doc['analyse']) ?></p>
+     <h3> <?= htmlspecialchars($doc['titre']) ?></h3>
 
-    <p><b>📅 Date d’enregistrement :</b> <?= htmlspecialchars($doc['date_enregistrement']) ?></p>
+    <p><b> Analyse :</b> <?= htmlspecialchars($doc['analyse']) ?></p>
 
-     <p><b>📚 Série :</b> <?= htmlspecialchars($doc['nom_serie']) ?></p>
+    <p><b> Date d’enregistrement :</b> <?= htmlspecialchars($doc['date_enregistrement']) ?></p>
 
-    <p><b>📂 Sous-série :</b> <?= htmlspecialchars($doc['libelle_sous_serie']) ?></p>
+     <p><b> Série :</b> <?= htmlspecialchars($doc['nom_serie']) ?></p>
 
-    <p><b>🔐 Statut :</b> <?= htmlspecialchars($doc['statut']) ?></p>
+    <p><b> Sous-série :</b> <?= htmlspecialchars($doc['libelle_sous_serie']) ?></p>
 
-    <p><b>📍 Emplacement :</b> <?= htmlspecialchars($doc['emplacement']) ?></p>
+    <p><b> Statut :</b> <?= htmlspecialchars($doc['statut']) ?></p>
+
+    <p><b> Emplacement :</b> <?= htmlspecialchars($doc['emplacement']) ?></p>
 
 
 
@@ -68,4 +69,9 @@ if (!$doc) {
         </a>
     </p>
 
+     <a href="ajout_document.php?id=<?= $doc['id_document'] ?>" style="color:green;">
+         Retour à la liste
+    </a>
+
 </div>
+   
