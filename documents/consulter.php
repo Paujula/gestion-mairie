@@ -64,14 +64,20 @@ if (!$doc) {
 
     <p>
         <b>📎 Fichier :</b><br>
-        <a href="../uploads/<?= htmlspecialchars($doc['fichier']) ?>" target="_blank">
+        <a href="download.php?file=<?= urlencode($doc['fichier']) ?>&id_document=<?= $doc['id_document'] ?>">
             📥 Télécharger le document
         </a>
     </p>
 
-     <a href="ajout_document.php?id=<?= $doc['id_document'] ?>" style="color:green;">
-         Retour à la liste
-    </a>
+    <?php if ($_SESSION['user']['role'] === 'archiviste'): ?>
 
+    <div class="mt-6 text-center">
+        <a href="ajout_document.php"
+           class="inline-block bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 transition">
+            ⬅ Retour à la liste
+        </a>
+    </div>
+
+<?php endif; ?>
 </div>
    

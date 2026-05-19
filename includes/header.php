@@ -26,18 +26,29 @@ define('BASE_URL', '/gestion-mairie/');
 
       
       <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === "archiviste"): ?>
-    <a href="<?= BASE_URL ?>documents/ajout_document.php"
-       style="color:white; margin-right:15px;">
-        Nos Documents
-    </a>
-<?php endif; ?>
+        <a href="<?= BASE_URL ?>documents/ajout_document.php"
+            style="color:white; margin-right:15px;">
+            Nos Documents
+        </a>
+
+        <a href="<?= BASE_URL ?>documents/demandes.php"
+            style="color:white; margin-right:15px;">
+            Liste des demandes
+        </a>
+    <?php endif; ?>
 
         <a href="<?= BASE_URL ?>apropos.php" style="color:white; margin-right:15px;">A propos</a>
         <a href="<?= BASE_URL ?>contact.php" style="color:white; margin-right:15px;">Contact</a>
         
         <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
-            <a href="<?= BASE_URL ?>documents/admin.php" style="color:white; margin-right:15px;">
+            <a href="<?= BASE_URL ?>administrateur/admin.php" style="color:white; margin-right:15px;">
                 Admin
+            </a>
+        <?php endif; ?>
+
+         <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'agent'): ?>
+            <a href="<?= BASE_URL ?>documents/mes_demandes.php" style="color:white; margin-right:15px;">
+                Mes Demandes
             </a>
         <?php endif; ?>
 

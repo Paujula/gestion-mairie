@@ -166,9 +166,9 @@ $users = $connexion->query("SELECT * FROM utilisateurs ORDER BY role ASC")->fetc
     </div>
 
     <div class="text-center mt-6">
-        <a href="historique_demandes.php"
+        <a href="historique.php"
            class="text-blue-600 hover:underline font-semibold">
-            📜 Voir historique des demandes
+            📜 Voir l'historique du site
         </a>
     </div>
 
