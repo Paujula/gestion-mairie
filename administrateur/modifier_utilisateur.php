@@ -108,7 +108,7 @@ if (isset($_POST['modifier'])) {
 </head>
 <body>
 
-<h2>✏️ Modifier utilisateur</h2>
+<h2> Modifier un utilisateur</h2>
 
 <p style="color:red;"><?= $message ?></p>
 

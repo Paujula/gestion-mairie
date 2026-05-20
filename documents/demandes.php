@@ -105,12 +105,12 @@ try {
 </table>
 
         <div class="text-center mt-6">
-    <a href="../index.php"
-       class="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg 
-              hover:bg-orange-600 transition duration-300 shadow">
-        ⬅ Retour à l'accueil
-    </a>
-</div>
+            <a href="../index.php"
+            class="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg 
+                    hover:bg-orange-600 transition duration-300 shadow">
+                ⬅ Retour à l'accueil
+            </a>
+        </div>
 
 </body>
 </html>

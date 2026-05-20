@@ -59,7 +59,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 
         <button
             class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-            🔍
+            Rechercher
         </button>
 
     </form>
@@ -74,7 +74,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
                 <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
 
                     <h3 class="text-lg font-bold text-blue-700 mb-2">
-                        📁 <?= htmlspecialchars($doc['cote']) ?>
+                         <?= htmlspecialchars($doc['cote']) ?>
                     </h3>
 
                     <h4 class="text-xl font-semibold text-gray-800 mb-2">
@@ -86,16 +86,16 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
                     </p>
 
                     <p class="text-sm text-gray-500 mb-2">
-                        📚 Série : <?= htmlspecialchars($doc['nom_serie']) ?>
+                         Série : <?= htmlspecialchars($doc['nom_serie']) ?>
                     </p>
 
                     <p class="text-sm text-gray-500 mb-4">
-                        🗂 Sous-série : <?= htmlspecialchars($doc['libelle_sous_serie']) ?>
+                         Sous-série : <?= htmlspecialchars($doc['libelle_sous_serie']) ?>
                     </p>
 
                     <a href="documents/consulter.php?id=<?= $doc['id_document'] ?>"
                        class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
-                        🔍 Consulter
+                         Consulter
                     </a>
 
                 </div>
